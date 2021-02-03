@@ -12,10 +12,13 @@ export class AppComponent implements OnInit {
     constructor(public http: HttpClient) {}
 
     ngOnInit() {
-        this.http.get('Access-Control-Allow-Origin: https://amazing.site')
+        this.http.get('http://localhost:4050/test-data')
             .subscribe(posts => {
                 this.posts = posts;
-                console.log(posts);
             })
+    }
+
+    log() {
+        console.log(this.posts);
     }
 }
