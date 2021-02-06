@@ -1,4 +1,67 @@
+<table mat-table [dataSource]="posts" class="mat-elevation-z8">
 
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- publicationType Column -->
+    <ng-container matColumnDef="Тип публікації">
+        <th mat-header-cell *matHeaderCellDef> 
+            <mat-form-field appearance="fill">
+                <mat-label>Toppings</mat-label>
+                <mat-select [formControl]="toppings" multiple>
+                    <mat-select-trigger>
+                        {{toppings.value ? toppings.value[0] : ''}}
+                        <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
+                            (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+                        </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        <td mat-cell *matCellDef="let element"> {{element.publicationType}} </td>
+    </ng-container>
+
+    <!-- termType Column -->
+    <ng-container matColumnDef="Періодичність">
+        <th mat-header-cell *matHeaderCellDef> Періодичність </th>
+        <td mat-cell *matCellDef="let element"> {{element.termType}} </td>
+    </ng-container>
+
+    <!-- reportGroup Column -->
+    <ng-container matColumnDef="Категорія суб'єкта">
+        <th mat-header-cell *matHeaderCellDef> Категорія суб'єкта </th>
+        <td mat-cell *matCellDef="let element"> {{element.reportGroup}} </td>
+    </ng-container>
+
+    <!-- reportState Column -->
+    <ng-container matColumnDef="Статус">
+        <th mat-header-cell *matHeaderCellDef> Статус </th>
+        <td mat-cell *matCellDef="let element"> {{element.reportState}} </td>
+    </ng-container>
+
+    <!-- reportFormat Column -->
+    <ng-container matColumnDef="Тип файлу">
+        <th mat-header-cell *matHeaderCellDef> Тип файлу </th>
+        <td mat-cell *matCellDef="let element"> {{element.reportFormat}} </td>
+    </ng-container>
+
+    <!-- outputDate.date Column -->
+    <ng-container matColumnDef="Вихідна дата документу">
+        <th mat-header-cell *matHeaderCellDef> Вихідна дата документу </th>
+        <td mat-cell *matCellDef="let element"> {{element.outputDate.date | date:"dd.MM.yyyy"}} </td>
+    </ng-container>
+
+    <!-- outputNumber Column -->
+    <ng-container matColumnDef="Вихідний номер документу">
+        <th mat-header-cell *matHeaderCellDef> Вихідний номер документу </th>
+        <td mat-cell *matCellDef="let element"> {{element.outputNumber}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+</table>
 
 
 <button (click)="logFromTable()">logFromTable</button>

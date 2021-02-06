@@ -19,25 +19,20 @@ export interface Post {
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-    public posts = [];
-    public data;
+    public posts: Post[];
 
     constructor(public http: HttpClient) {}
 
     ngOnInit() {
-        this.http.get('http://localhost:4050/test-data')
+        this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
-                this.data = data;
+                this.posts = data;
             })
-        
-        for (let post of this.data) {
-            this.posts.push(post)
-        }
     }
 
     log() {
         console.log(this.posts);
-        console.log(this.data);
+        
     }
 
     
