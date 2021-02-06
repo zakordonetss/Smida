@@ -13,20 +13,32 @@ import { Post } from '../app.component';
 
 
 export class TableComponent implements OnInit {
-  @Input() posts: Post[];
-  toppings = new FormControl();
+    @Input() tableData: Post[];
 
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+    toppings = new FormControl();
+    toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
-  constructor() {
-  }
+    termTypes = new FormControl();
+    termTypesList = [];
 
-  ngOnInit() {
-  }
 
-  logFromTable() {
-      console.log(this.posts);
-  }
+    ngOnInit() {
+        this.setTermTypes()
+    }
 
-  displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу'];
+    setTermTypes() {
+        for (let el of this.tableData) {
+            if (!this.termTypesList.includes(el.termType)) {
+                this.termTypesList.push(el.termType);
+            }
+        }
+    }
+
+    logFromTable() {
+        this.setTermTypes();
+        console.log(this.tableData);
+        console.log(this.termTypesList);
+    }
+
+    displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу'];
 }

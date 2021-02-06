@@ -5,11 +5,10 @@ const cors = require('cors');
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send('Hello API');
+    res.send('Server works');
 })
 
 app.get('/test-data', (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
     res.send(testData);
 })
 
