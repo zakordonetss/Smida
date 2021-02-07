@@ -6,17 +6,12 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
+
+
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatSelectModule,
-  ],
-  exports: [
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,

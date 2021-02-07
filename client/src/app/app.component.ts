@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { TableDataService } from './services/table-data.service';
+import { FormControl } from '@angular/forms';
 
 export interface Post {
     publicationType: string,
@@ -17,24 +17,24 @@ export interface Post {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass'],
-  
+  styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
+    public tableData: Post[];
 
-    constructor(
-        private http: HttpClient,
-        private tableDataService: TableDataService,
-        ) {}
+    constructor(public http: HttpClient) {}
 
     ngOnInit() {
         this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
-                this.tableDataService.tableData = data;
+                this.tableData = data;
             })
     }
 
+
     log() {
-        console.log(this.tableDataService.tableData);
+        console.log(this.tableData);
     }
+
+    
 }
