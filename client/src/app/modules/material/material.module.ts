@@ -17,6 +17,13 @@ import {MatSelectModule} from '@angular/material/select';
     MatSortModule,
     MatFormFieldModule,
     MatSelectModule,
+  ],
+  exports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ]
 })
 export class MaterialModule { }

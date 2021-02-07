@@ -4,6 +4,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { Post } from '../app.component';
+import { TableDataService } from '../services/table-data.service';
+import { TableFiltersService } from '../services/table-filters.service';
 
 @Component({
   selector: 'app-table',
@@ -12,33 +14,19 @@ import { Post } from '../app.component';
 })
 
 
-export class TableComponent implements OnInit {
-    @Input() tableData: Post[];
+export class TableComponent {
+    
 
-    toppings = new FormControl();
-    toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  constructor(
+      public tableDataService: TableDataService,
+      public tableFilterService: TableFiltersService,
+      ) {
+  }
 
-    termTypes = new FormControl();
-    termTypesList = [];
 
-
-    ngOnInit() {
-        this.setTermTypes()
-    }
-
-    setTermTypes() {
-        for (let el of this.tableData) {
-            if (!this.termTypesList.includes(el.termType)) {
-                this.termTypesList.push(el.termType);
-            }
-        }
-    }
-
-    logFromTable() {
-        this.setTermTypes();
-        console.log(this.tableData);
-        console.log(this.termTypesList);
-    }
+  logFromTable() {
+      console.log(this.tableDataService.tableData);
+  }
 
     displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу'];
 }

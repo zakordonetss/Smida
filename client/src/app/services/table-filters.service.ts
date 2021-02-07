@@ -5,7 +5,7 @@ import { FormControl } from "@angular/forms";
     providedIn: 'root'
 })
 
-export class FiltersService {
+export class TableFiltersService {
 
     constructor(){}
 

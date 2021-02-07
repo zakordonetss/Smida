@@ -1,4 +1,4 @@
-<!-- <table mat-table [dataSource]="tableData" class="mat-elevation-z8">
+<table mat-table [dataSource]="tableDataService.tableData" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -8,14 +8,14 @@
         <th mat-header-cell *matHeaderCellDef> 
             <mat-form-field appearance="fill">
                 <mat-label>Toppings</mat-label>
-                <mat-select [formControl]="toppings" multiple>
+                <mat-select [formControl]="tableFilterService.toppings" multiple>
                     <mat-select-trigger>
-                        {{toppings.value ? toppings.value[0] : ''}}
-                        <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
-                            (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+                        {{tableFilterService.toppings.value ? tableFilterService.toppings.value[0] : ''}}
+                        <span *ngIf="tableFilterService.toppings.value?.length > 1" class="example-additional-selection">
+                            (+{{tableFilterService.toppings.value.length - 1}} {{tableFilterService.toppings.value?.length === 2 ? 'other' : 'others'}})
                         </span>
                     </mat-select-trigger>
-                    <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                    <mat-option *ngFor="let topping of tableFilterService.toppingList" [value]="topping">{{topping}}</mat-option>
                 </mat-select>
             </mat-form-field>
         <td mat-cell *matCellDef="let element"> {{element.publicationType}} </td>
@@ -61,7 +61,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-</table> -->
+</table>
 
 
 <button (click)="logFromTable()">logFromTable</button>
