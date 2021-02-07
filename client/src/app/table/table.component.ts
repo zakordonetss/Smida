@@ -19,13 +19,11 @@ export class TableComponent {
 
   constructor(
       public tableDataService: TableDataService,
-      ) {
-  }
+      ) {}
 
 
   logFromTable() {
-      console.log(this.tableDataService.termTypesList);
-      console.log(this.tableDataService.publicationTypesList)
+      console.log(this.tableDataService.termTypes);
   }
 
     displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу'];

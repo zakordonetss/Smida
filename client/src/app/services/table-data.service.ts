@@ -19,6 +19,11 @@ export class TableDataService {
     termTypes = new FormControl();
     termTypesList: string[] = [];
 
+    setFiltersType() {
+        this.setPublicationTypes();
+        this.setTermTypes();
+    }
+
     setPublicationTypes() {
         for (let el of this.tableData) {
             if (!this.publicationTypesList.includes(el.publicationType)) {

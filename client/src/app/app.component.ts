@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { TableDataService } from './services/table-data.service';
 
 export interface Post {
@@ -31,8 +30,7 @@ export class AppComponent implements OnInit {
         this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
                 this.tableDataService.tableData = data;
-                this.tableDataService.setTermTypes();
-                this.tableDataService.setPublicationTypes();
+                this.tableDataService.setFiltersType();
             })
     }
 
