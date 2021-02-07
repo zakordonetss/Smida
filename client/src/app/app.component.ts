@@ -31,6 +31,8 @@ export class AppComponent implements OnInit {
         this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
                 this.tableDataService.tableData = data;
+                this.tableDataService.setTermTypes();
+                this.tableDataService.setPublicationTypes();
             })
     }
 

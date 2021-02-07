@@ -1,11 +1,6 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import { Post } from '../app.component';
 import { TableDataService } from '../services/table-data.service';
-import { TableFiltersService } from '../services/table-filters.service';
 
 @Component({
   selector: 'app-table',
@@ -15,17 +10,22 @@ import { TableFiltersService } from '../services/table-filters.service';
 
 
 export class TableComponent {
-    
+    publicationTypes: FormControl = this.tableDataService.publicationTypes;
+    publicationTypesList: string[] = this.tableDataService.publicationTypesList;
+
+    termTypes: FormControl = this.tableDataService.termTypes;
+    termTypesList: string[] = this.tableDataService.termTypesList;
+
 
   constructor(
       public tableDataService: TableDataService,
-      public tableFilterService: TableFiltersService,
       ) {
   }
 
 
   logFromTable() {
-      console.log(this.tableDataService.tableData);
+      console.log(this.tableDataService.termTypesList);
+      console.log(this.tableDataService.publicationTypesList)
   }
 
     displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу'];
