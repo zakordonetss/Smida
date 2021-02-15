@@ -1,7 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Post } from '../app.component';
-import {MatButtonModule} from '@angular/material/button';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+
+export interface Post {
+    publicationType: string,
+    termType: string,
+    reportGroup: string,
+    reportState: string,
+    reportFormat: string,
+    outputDate: {
+        date: Date,
+    },
+    outputNumber: number,
+}
 
 @Component({
   selector: 'app-table',
@@ -12,6 +25,7 @@ import {MatButtonModule} from '@angular/material/button';
 
 export class TableComponent implements OnInit {
     public tableData: Post[];
+    
     form: FormGroup;
 
     publicationTypes: FormControl;
@@ -20,7 +34,19 @@ export class TableComponent implements OnInit {
     termTypes: FormControl;
     termTypesList: string[] = [];
 
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+    constructor(
+        private http: HttpClient,
+        ) {}
+
     ngOnInit() {
+        this.http.get<Post[]>('http://localhost:4050/test-data')
+            .subscribe(data => {
+                this.tableData = data;
+                
+                this.setFiltersTypes();
+            })
         this.form = new FormGroup({});
         this.publicationTypes = new FormControl();
         this.termTypes = new FormControl();
