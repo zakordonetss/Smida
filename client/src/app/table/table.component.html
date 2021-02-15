@@ -1,7 +1,4 @@
-<table mat-table [dataSource]="tableDataService.tableData" class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+<table mat-table [dataSource]="tableData" class="mat-elevation-z8" [formGroup]='form'>
 
     <!-- publicationType Column -->
     <ng-container matColumnDef="Тип публікації">
@@ -12,7 +9,7 @@
                     <mat-select-trigger>
                         {{publicationTypes.value ? publicationTypes.value[0] : ''}}
                         <span *ngIf="publicationTypes.value?.length > 1" class="example-additional-selection">
-                            (+{{publicationTypes.value.length - 1}} {{publicationTypes.value?.length === 2 ? 'other' : 'others'}})
+                            (+{{publicationTypes.value.length - 1}} {{publicationTypes.value?.length === 2 ? 'фільтр' : 'фільтри'}})
                         </span>
                     </mat-select-trigger>
                     <mat-option *ngFor="let type of publicationTypesList" [value]="type">{{type}}</mat-option>
@@ -27,12 +24,12 @@
         <th mat-header-cell *matHeaderCellDef> 
             <mat-form-field appearance="fill">
                 <mat-label>Періодичність</mat-label>
-                <mat-select [formControl]="termTypes" multiple>
+                <mat-select [formControl]="termTypes" (selectionChange)='log($event)' multiple>
                     <mat-select-trigger>
                         {{termTypes.value ? termTypes.value[0] : ''}}
                         <span *ngIf="termTypes.value?.length > 1" class="example-additional-selection">
                             (+{{termTypes.value.length - 1}} {{termTypes.value?.length === 2 ?
-                            'other' : 'others'}})
+                            'фільтр' : 'фільтри'}})
                         </span>
                     </mat-select-trigger>
                     <mat-option *ngFor="let type of termTypesList" [value]="type">{{type}}</mat-option>
@@ -70,6 +67,15 @@
     <ng-container matColumnDef="Вихідний номер документу">
         <th mat-header-cell *matHeaderCellDef> Вихідний номер документу </th>
         <td mat-cell *matCellDef="let element"> {{element.outputNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Скинути">
+        <th mat-header-cell *matHeaderCellDef><button mat-raised-button color="warn">Скинути</button></th>
+        <td mat-cell *matCellDef="let element"> 
+            <button mat-icon-button color="warn">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
     </ng-container>
 
 
