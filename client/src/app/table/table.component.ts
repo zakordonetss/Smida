@@ -24,7 +24,16 @@ export interface Post {
 
 
 export class TableComponent implements OnInit {
-    public tableData: Post[];
+    log(event) {
+      console.log(event);
+    }
+
+    logFromTable() {
+      console.log(this.dataSource.data);
+      this.filterTable();
+     }
+    dataSource: MatTableDataSource<Post> = new MatTableDataSource();
+
     
     form: FormGroup;
 
@@ -43,10 +52,10 @@ export class TableComponent implements OnInit {
     ngOnInit() {
         this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
-                this.tableData = data;
-                
+                this.dataSource.data = data;
                 this.setFiltersTypes();
             })
+            
         this.form = new FormGroup({});
         this.publicationTypes = new FormControl();
         this.termTypes = new FormControl();
@@ -58,7 +67,7 @@ export class TableComponent implements OnInit {
     }
 
     setPublicationTypes() {
-        for (let el of this.tableData) {
+        for (let el of this.dataSource.data) {
             if (!this.publicationTypesList.includes(el.publicationType)) {
                 this.publicationTypesList.push(el.publicationType);
             }
@@ -66,7 +75,7 @@ export class TableComponent implements OnInit {
     }
 
     setTermTypes() {
-        for (let el of this.tableData) {
+        for (let el of this.dataSource.data) {
             if (!this.termTypesList.includes(el.termType)) {
                 this.termTypesList.push(el.termType);
             }
@@ -80,22 +89,12 @@ export class TableComponent implements OnInit {
     filterByTermTypes() {
         const checkedTermTypes: string[] = this.termTypes.value;
 
-        this.tableData = this.tableData.filter(item => checkedTermTypes.includes(item.termType))
+        this.dataSource.data = this.dataSource.data.filter(item => checkedTermTypes.includes(item.termType))
     }
 
     getIndexByTermType(type) {
-        return this.tableData.findIndex(item => item.termType === type);
+        return this.dataSource.data.findIndex(item => item.termType === type);
     }
-
-
-  logFromTable() {
-      console.log(this.termTypes);
-      this.filterByTermTypes();
-  }
-
-  log(event) {
-      console.log(event);
-  }
 
     displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу', 'Скинути'];
 }

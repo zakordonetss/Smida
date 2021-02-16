@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="tableData" class="mat-elevation-z8" [formGroup]='form'>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" [formGroup]='form'>
 
     <!-- publicationType Column -->
     <ng-container matColumnDef="Тип публікації">
@@ -87,7 +87,7 @@
 </table>
 
 <mat-paginator 
-    [length]="100"
+    [length]="dataSource.data.length"
     [pageSize]="5"
     [pageSizeOptions]="[5, 10, 25, 100]" 
     showFirstLastButtons

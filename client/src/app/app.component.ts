@@ -13,11 +13,5 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
     }
-
-
-    log() {
-        console.log(this.table.tableData);
-    }
-
     
 }
