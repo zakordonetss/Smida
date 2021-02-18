@@ -4,8 +4,8 @@
     <ng-container matColumnDef="Тип публікації">
         <th mat-header-cell *matHeaderCellDef> 
             <mat-form-field appearance="fill">
-                <mat-label>Toppings</mat-label>
-                <mat-select [formControl]="publicationTypes" multiple>
+                <mat-label>Тип публікації</mat-label>
+                <mat-select [formControl]="publicationTypes" (selectionChange)='filterTable()' multiple>
                     <mat-select-trigger>
                         {{publicationTypes.value ? publicationTypes.value[0] : ''}}
                         <span *ngIf="publicationTypes.value?.length > 1" class="example-additional-selection">
@@ -24,7 +24,7 @@
         <th mat-header-cell *matHeaderCellDef> 
             <mat-form-field appearance="fill">
                 <mat-label>Періодичність</mat-label>
-                <mat-select [formControl]="termTypes" (selectionChange)='log($event)' multiple>
+                <mat-select [formControl]="termTypes" (selectionChange)='filterTable()' multiple>
                     <mat-select-trigger>
                         {{termTypes.value ? termTypes.value[0] : ''}}
                         <span *ngIf="termTypes.value?.length > 1" class="example-additional-selection">

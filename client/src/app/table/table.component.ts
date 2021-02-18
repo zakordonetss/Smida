@@ -24,49 +24,43 @@ export interface Post {
 
 
 export class TableComponent implements OnInit {
-    log(event) {
-      console.log(event);
+    logFromTable() {
+        console.log(this.form);  
     }
 
-    logFromTable() {
-      console.log(this.dataSource.data);
-      this.filterTable();
-     }
-    dataSource: MatTableDataSource<Post> = new MatTableDataSource();
-
+    public dataSource: MatTableDataSource<Post> = new MatTableDataSource();
+    private _tableData: Post[];
     
-    form: FormGroup;
+    public form: FormGroup;
 
-    publicationTypes: FormControl;
-    publicationTypesList: string[] = [];
+    public publicationTypes: FormControl;
+    public publicationTypesList: string[] = [];
 
-    termTypes: FormControl;
-    termTypesList: string[] = [];
+    public termTypes: FormControl;
+    public termTypesList: string[] = [];
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(
-        private http: HttpClient,
-        ) {}
+    constructor(private http: HttpClient) {}
 
     ngOnInit() {
         this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
                 this.dataSource.data = data;
-                this.setFiltersTypes();
+                this._tableData = data;
+                this._setFiltersTypes();
             })
-            
         this.form = new FormGroup({});
         this.publicationTypes = new FormControl();
         this.termTypes = new FormControl();
     }
 
-    setFiltersTypes() {
-        this.setPublicationTypes();
-        this.setTermTypes();
+    private _setFiltersTypes() {
+        this._setPublicationTypes();
+        this._setTermTypes();
     }
 
-    setPublicationTypes() {
+    private _setPublicationTypes() {
         for (let el of this.dataSource.data) {
             if (!this.publicationTypesList.includes(el.publicationType)) {
                 this.publicationTypesList.push(el.publicationType);
@@ -74,7 +68,7 @@ export class TableComponent implements OnInit {
         }
     }
 
-    setTermTypes() {
+    private _setTermTypes() {
         for (let el of this.dataSource.data) {
             if (!this.termTypesList.includes(el.termType)) {
                 this.termTypesList.push(el.termType);
@@ -83,17 +77,28 @@ export class TableComponent implements OnInit {
     }
 
     filterTable() {
-        this.filterByTermTypes()
+        this._filterByPublicationTypes();
+        this._filterByTermTypes();
     }
 
-    filterByTermTypes() {
-        const checkedTermTypes: string[] = this.termTypes.value;
-
-        this.dataSource.data = this.dataSource.data.filter(item => checkedTermTypes.includes(item.termType))
+    private _filterByPublicationTypes() {
+        if (this.publicationTypes.value && this.publicationTypes.value.length) {
+            const checkedTermTypes: string[] = this.publicationTypes.value;
+            this._resetDataSource();
+            this.dataSource.data = this.dataSource.data.filter(item => checkedTermTypes.includes(item.publicationType));
+        } else this._resetDataSource(); 
     }
 
-    getIndexByTermType(type) {
-        return this.dataSource.data.findIndex(item => item.termType === type);
+    private _filterByTermTypes() {
+        if (this.termTypes.value && this.termTypes.value.length) {
+            const checkedTermTypes: string[] = this.termTypes.value;
+            this._resetDataSource();
+            this.dataSource.data = this.dataSource.data.filter(item => checkedTermTypes.includes(item.termType));
+        } else this._resetDataSource();
+    }
+
+    private _resetDataSource() {
+        this.dataSource.data = this._tableData;
     }
 
     displayedColumns: string[] = ['Тип публікації', 'Періодичність', "Категорія суб'єкта", 'Статус', 'Тип файлу', 'Вихідна дата документу', 'Вихідний номер документу', 'Скинути'];
