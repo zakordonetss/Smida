@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 
 export interface Post {
     publicationType: string,
@@ -23,13 +24,14 @@ export interface Post {
 })
 
 
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnDestroy {
     logFromTable() {
         console.log(this.form);  
     }
 
     public dataSource: MatTableDataSource<Post> = new MatTableDataSource();
     private _tableData: Post[];
+    private _sub: Subscription;
     
     public form: FormGroup;
 
@@ -39,12 +41,15 @@ export class TableComponent implements OnInit {
     public termTypes: FormControl;
     public termTypesList: string[] = [];
 
+    public reportGroups: FormControl;
+    public reportGroupsList: string[] = [];
+
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private http: HttpClient) {}
 
     ngOnInit() {
-        this.http.get<Post[]>('http://localhost:4050/test-data')
+        this._sub = this.http.get<Post[]>('http://localhost:4050/test-data')
             .subscribe(data => {
                 this.dataSource.data = data;
                 this._tableData = data;
@@ -53,11 +58,17 @@ export class TableComponent implements OnInit {
         this.form = new FormGroup({});
         this.publicationTypes = new FormControl();
         this.termTypes = new FormControl();
+        this.reportGroups = new FormControl();
+    }
+
+    ngOnDestroy() {
+        this._sub.unsubscribe();
     }
 
     private _setFiltersTypes() {
         this._setPublicationTypes();
         this._setTermTypes();
+        this._setReportGroups();
     }
 
     private _setPublicationTypes() {
@@ -76,24 +87,38 @@ export class TableComponent implements OnInit {
         }
     }
 
-    filterTable() {
+    private _setReportGroups() {
+        for (let el of this.dataSource.data) {
+            if (!this.reportGroupsList.includes(el.reportGroup)) {
+                this.reportGroupsList.push(el.reportGroup);
+            }
+        }
+    }
+
+    public filterTable() {
         this._filterByPublicationTypes();
         this._filterByTermTypes();
+        this._filterByReportGroups();
     }
 
     private _filterByPublicationTypes() {
         if (this.publicationTypes.value && this.publicationTypes.value.length) {
-            const checkedTermTypes: string[] = this.publicationTypes.value;
-            this._resetDataSource();
-            this.dataSource.data = this.dataSource.data.filter(item => checkedTermTypes.includes(item.publicationType));
+            const checkedPublicationTypes: string[] = this.publicationTypes.value;
+            this.dataSource.data = this.dataSource.data.filter(item => checkedPublicationTypes.includes(item.publicationType));
         } else this._resetDataSource(); 
     }
 
     private _filterByTermTypes() {
         if (this.termTypes.value && this.termTypes.value.length) {
             const checkedTermTypes: string[] = this.termTypes.value;
-            this._resetDataSource();
             this.dataSource.data = this.dataSource.data.filter(item => checkedTermTypes.includes(item.termType));
+        } else this._resetDataSource();
+    }
+
+    private _filterByReportGroups() {
+        if (this.reportGroups.value && this.reportGroups.value.length) {
+            const checkedReportGroups: string[] = this.reportGroups.value;
+            this.dataSource.data = this.dataSource.data.filter(item => checkedReportGroups.includes(item.reportGroup));
         } else this._resetDataSource();
     }
 

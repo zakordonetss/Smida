@@ -41,7 +41,21 @@
 
     <!-- reportGroup Column -->
     <ng-container matColumnDef="Категорія суб'єкта">
-        <th mat-header-cell *matHeaderCellDef> Категорія суб'єкта </th>
+        <th mat-header-cell *matHeaderCellDef>
+            <mat-form-field appearance="fill">
+                <mat-label>Категорія суб'єкта</mat-label>
+                <mat-select [formControl]="reportGroups" (selectionChange)='filterTable()' multiple>
+                    <mat-select-trigger>
+                        {{reportGroups.value ? reportGroups.value[0] : ''}}
+                        <span *ngIf="reportGroups.value?.length > 1" class="example-additional-selection">
+                            (+{{reportGroups.value.length - 1}} {{reportGroups.value?.length === 2 ?
+                            'фільтр' : 'фільтри'}})
+                        </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let group of reportGroupsList" [value]="group">{{group}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </th>
         <td mat-cell *matCellDef="let element"> {{element.reportGroup}} </td>
     </ng-container>
 
